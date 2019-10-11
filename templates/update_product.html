@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+
+    {% block content %}
+        <form method="POST" id="target">
+            <div class="form-group">
+                <input type="text" class="form-control" name="sr_no" value="{{ data.sr_no }}">
+            </div>
+            <div class="form-group">
+                <input type="text" class="form-control" name="product_id" value="{{ data.product_id }}">
+            </div>
+
+            <div class="form-group">
+                <input type="text" class="form-control" name="name_of_product" value="{{ data.name_of_product }}">
+            </div>
+            <div class="form-group">
+                <input type="text" class="form-control" name="quantity" value="{{ data.quantity }}">
+            </div>
+            <div class="form-group">
+                <input type="text" class="form-control" name="cost_of_product" value="{{ data.cost_of_product }}">
+            </div>
+            <button type="submit" class="btn btn-block btn-primary">Update</button>
+        </form>
+    {% endblock %}
