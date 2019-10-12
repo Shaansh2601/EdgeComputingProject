@@ -28,6 +28,7 @@
     <div>
         <div class="product-container" style="overflow: auto; max-height: 80vh;" link>
             <div class="table-responsive">
+                {% set total = [0]  %}
                 <table class="table" id="products">
                     <thead>
                         <tr>
@@ -42,6 +43,7 @@
                     </thead>
                     <tbody>
                     {% for product in products %}
+                        {% set _ = total.append(total.pop() + product.final_cost_of_product|int) %}
                         <tr id={{ product.product_id }}>
                             <td>{{ product.sr_no }}</td>
                             <td>{{ product.product_id }}</td>
@@ -53,6 +55,14 @@
                             <td> <a href="/delete/{{ product.id }}">Delete</a> </td>
                         </tr>
                     {% endfor %}
+                        <tr>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td style="color: red">Total</td>
+                            <td style="color: red">{{ total[0] }}</td>
+                        </tr>
 
                     </tbody>
 
@@ -64,8 +74,6 @@
     <form method="POST" id="tar">
         <button id="btn1" name="Submit_btn" value="create_bill" type="submit" class="btn btn-block btn-primary" onclick="myFunction()">Create Bill</button>
     	<button id="btn2" name="Submit_btn" type="submit" value="checkout" class="btn btn-block btn-primary" style="display: none">Checkout</button>
-
-
         <button id="btn3" name="Submit_btn" type="submit" class="btn btn-block btn-primary" style="display: none">Clear</button>
     </form>
     </div>
@@ -93,21 +101,8 @@
             y.style.display = "none"
         }
     }
-
-    function calculate(){
-        var table = document.getElementById("products") , sumVal=0;
-        for(var i=1;i<table.rows.length;i++){
-            sumVal =sumVal + parseInt(table.rows[i].cells[4].innerHTML);
-        }
-        console.log(sumVal)
-        document.getElementById("val").innerHTML ="Sum" + sumVal
-    }
-
-
-
-
 </script>
 
 
    </body>
-    {% endblock %}
+{% endblock %}

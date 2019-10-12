@@ -62,10 +62,12 @@
                 <tbody>
                 {% for product in products %}
                     <tr id={{ product.id }}>
-                        <th scope="row">{{ product.name_of_product }}</th>
-                        <td> {{product.quantity }} </td>
-                        <td> {{ product.cost_of_product }} </td>
-                        <td> <a href="/edit/{{ product.id }}">Edit</a> </td>
+                            <td>{{ product.sr_no }}</td>
+                            <td>{{ product.product_id }}</td>
+                            <td> {{ product.name_of_product }}</td>
+                            <td id="td1"> {{product.quantity }} </td>
+                            <td id="td2"> {{ product.cost_of_product }} </td>
+                            <td id="result"> {{ product.final_cost_of_product }} </td>
                     </tr>
                 {% endfor %}
                 </tbody>
