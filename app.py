@@ -41,9 +41,8 @@ def backend():
         name_of_product = request.form["name_of_product"]
         quantity = request.form["quantity"]
         cost_of_product = request.form["cost_of_product"]
-        final_cost_product = int(quantity) * int (cost_of_product)
 
-        new_product = Product(sr_no, product_id, name_of_product,quantity,cost_of_product,final_cost_product)
+        new_product = Product(sr_no, product_id, name_of_product,quantity,cost_of_product)
         db_session.add(new_product)
         db_session.commit()
 
@@ -96,6 +95,18 @@ def update_record(id):
         new_product = Product.query.get(id)
 
         return render_template('update_product.html', data=new_product)
+
+@app.route('/delete/<int:id1>', methods=["POST", "GET"])
+def delete_record(id1):
+    if request.method == "POST":
+        return redirect('/',code=302)
+    else:
+        Product.query.filter_by(id=id1).delete()
+        db_session.commit()
+        return redirect('/', code=302)
+    return render_template('index.html')
+
+
 
 @app.teardown_appcontext
 def shutdown_session(exception=None):
