@@ -1,8 +1,7 @@
 
     // Initialize Pusher
-    const pusher = new Pusher('8ad4d5b94378b706db99', {
-        cluster: 'ap2',
-        encrypted: true
+    var pusher = new Pusher('8ad4d5b94378b706db99', {
+        cluster: 'ap2'
     });
 
     // Subscribe to table channel
@@ -10,12 +9,14 @@
 
     channel.bind('new-record', (data) => {
 
-       $('#product').append(`
-            <tr id="${data.data.sr_no} ">
-                <th scope="row"> ${data.data.product_id} </th>
+       $('#products').append(`
+            <tr id="${data.data.product_id} ">
+                <td> ${data.data.sr_no} </td>
+                <td> ${data.data.product_id} </td>
                 <td> ${data.data.name_of_product} </td>
                 <td> ${data.data.quantity} </td>
                 <td> ${data.data.cost_of_product} </td>
+                <td>${data.data.final_cost_of_product}</td>
             </tr>
        `)
     });
