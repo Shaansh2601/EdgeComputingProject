@@ -52,7 +52,6 @@
                             <td id="td2"> {{ product.cost_of_product }} </td>
                             <td id="result"> {{ product.final_cost_of_product }} </td>
                             <td> <a href="/edit/{{ product.id }}">Edit</a> </td>
-                            <td> <a href="/delete/{{ product.id }}">Delete</a> </td>
                         </tr>
                     {% endfor %}
                         <tr>
@@ -74,6 +73,8 @@
     <form method="POST" id="tar">
         <button id="btn1" name="Submit_btn" value="create_bill" type="submit" class="btn btn-block btn-primary" onclick="myFunction()">Create Bill</button>
     	<button id="btn2" name="Submit_btn" type="submit" value="checkout" class="btn btn-block btn-primary" style="display: none">Checkout</button>
+
+
         <button id="btn3" name="Submit_btn" type="submit" class="btn btn-block btn-primary" style="display: none">Clear</button>
     </form>
     </div>
@@ -101,8 +102,21 @@
             y.style.display = "none"
         }
     }
+
+    function calculate(){
+        var table = document.getElementById("products") , sumVal=0;
+        for(var i=1;i<table.rows.length;i++){
+            sumVal =sumVal + parseInt(table.rows[i].cells[4].innerHTML);
+        }
+        console.log(sumVal)
+        document.getElementById("val").innerHTML ="Sum" + sumVal
+    }
+
+
+
+
 </script>
 
 
    </body>
-{% endblock %}
+    {% endblock %}
