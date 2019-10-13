@@ -4,7 +4,6 @@ from database import db_session
 from models import Product
 import faces
 
-sum=0
 app = Flask(__name__)
 pusher_client = pusher.Pusher(
         app_id='875481',
@@ -19,13 +18,11 @@ def index():
     if request.method=="POST":
         if request.form['Submit_btn'] == 'create_bill':
             faces.start()
-
         elif request.form['Submit_btn'] == 'checkout':
             pass
         else:
             Product.query.delete()
             db_session.commit()
-
         return redirect("/", code=302)
     else:
         products = Product.query.all()
@@ -98,15 +95,9 @@ def update_record(id):
 
 @app.route('/delete/<int:id1>', methods=["POST", "GET"])
 def delete_record(id1):
-    if request.method == "POST":
-        return redirect('/',code=302)
-    else:
-        Product.query.filter_by(id=id1).delete()
-        db_session.commit()
-        return redirect('/', code=302)
-    return render_template('index.html')
-
-
+    Product.query.filter_by(id=id1).delete()
+    db_session.commit()
+    return redirect('/', code=302)
 
 @app.teardown_appcontext
 def shutdown_session(exception=None):

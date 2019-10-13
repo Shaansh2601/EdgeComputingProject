@@ -7,16 +7,33 @@ import pickle
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 image_dir = os.path.join(BASE_DIR, "images")
 
-cream_cascade = cv2.CascadeClassifier('cascades/data/cascade_cream.xml')
+herbal_cascade = cv2.CascadeClassifier('cascades/data/cascade_cream.xml')
 joy_cream_cascade = cv2.CascadeClassifier('cascades/data/joy_cream_cascade.xml')
+colgate_cascade = cv2.CascadeClassifier('cascades/data/cascade_colgate1.xml')
 colgate_100gm_cascade = cv2.CascadeClassifier('cascades/data/cascade_colgate_100gm.xml')
-colgate_50gm_cascade = cv2.CascadeClassifier('cascades/data/cascade_colgate_50gm.xml')
-recognizer = cv2.face.LBPHFaceRecognizer_create()
+
+
+recognizer_herbal = cv2.face.LBPHFaceRecognizer_create()
+recognizer_joy = cv2.face.LBPHFaceRecognizer_create()
+recognizer_colgate = cv2.face.LBPHFaceRecognizer_create()
+recognizer_colgate_100gm = cv2.face.LBPHFaceRecognizer_create()
 
 current_id = 0
 label_ids = {}
-y_labels = []
-x_train = []
+
+y_labels_herbal = []
+x_train_herbal = []
+
+
+y_labels_joy = []
+x_train_joy = []
+
+y_labels_colgate = []
+x_train_colgate = []
+
+y_labels_colgate_100gm = []
+x_train_colgate_100gm = []
+
 
 for root, dirs, files in os.walk(image_dir):
 	for file in files:
@@ -35,38 +52,45 @@ for root, dirs, files in os.walk(image_dir):
 			final_image = pil_image.resize(size, Image.ANTIALIAS)
 			image_array = np.array(final_image, "uint8")
 			#print(image_array)
-			faces = cream_cascade.detectMultiScale(image_array, scaleFactor=1.5, minNeighbors=5)
+			herbal = herbal_cascade.detectMultiScale(image_array, scaleFactor=1.5, minNeighbors=5)
+			joy_cream = joy_cream_cascade.detectMultiScale(image_array, scaleFactor=1.5, minNeighbors=5)
+			colgate = colgate_cascade.detectMultiScale(image_array, scaleFactor=1.5, minNeighbors=5)
 			colgate_100gm = colgate_100gm_cascade.detectMultiScale(image_array, scaleFactor=1.5, minNeighbors=5)
-			joy = joy_cream_cascade.detectMultiScale(image_array, scaleFactor=1.5, minNeighbors=5)
-			colgate_50gm = joy_cream_cascade.detectMultiScale(image_array, scaleFactor=1.5, minNeighbors=5)
 
-
-			for (x,y,w,h) in faces:
+			for (x,y,w,h) in herbal:
 				roi = image_array[y:y+h, x:x+w]
-				x_train.append(roi)
-				y_labels.append(id_)
+				x_train_herbal.append(roi)
+				y_labels_herbal.append(id_)
 
+			for (x,y,w,h) in joy_cream:
+				roi = image_array[y:y+h, x:x+w]
+				x_train_joy.append(roi)
+				y_labels_joy.append(id_)
+
+			for (x,y,w,h) in colgate:
+				roi = image_array[y:y+h, x:x+w]
+				x_train_colgate.append(roi)
+				y_labels_colgate.append(id_)
 
 			for (x,y,w,h) in colgate_100gm:
 				roi = image_array[y:y+h, x:x+w]
-				x_train.append(roi)
-				y_labels.append(id_)
-
-			for (x,y,w,h) in joy:
-				roi = image_array[y:y+h, x:x+w]
-				x_train.append(roi)
-				y_labels.append(id_)
-
-			for (x,y,w,h) in colgate_50gm:
-				roi = image_array[y:y+h, x:x+w]
-				x_train.append(roi)
-				y_labels.append(id_)
-
+				x_train_colgate_100gm.append(roi)
+				y_labels_colgate_100gm.append(id_)
 #print(y_labels)
 #print(x_train)
 
 with open("pickles/face-labels.pickle", 'wb') as f:
 	pickle.dump(label_ids, f)
 
-recognizer.train(x_train, np.array(y_labels))
-recognizer.save("recognizers/face-trainner.yml")
+recognizer_herbal.train(x_train_herbal, np.array(y_labels_herbal))
+recognizer_herbal.save("recognizers/face-trainner_herbal.yml")
+
+recognizer_joy.train(x_train_joy, np.array(y_labels_joy))
+recognizer_joy.save("recognizers/face-trainner_joy.yml")
+
+recognizer_colgate.train(x_train_colgate, np.array(y_labels_colgate))
+recognizer_colgate.save("recognizers/face-trainner_colgate.yml")
+
+
+recognizer_colgate_100gm.train(x_train_colgate_100gm, np.array(y_labels_colgate_100gm))
+recognizer_colgate_100gm.save("recognizers/face-trainner_colgate_100gm.yml")
